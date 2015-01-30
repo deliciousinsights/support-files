@@ -1,9 +1,14 @@
 #! /bin/bash
+#
+# Autopilot configurator for local Git config, Git-aware Bash prompt and Bash completion.
+# Helps bootstrap Git training sessions much faster, but can help anyone else, I guess…
+#
+# (c) 2015 Christophe Porteneuve <christophe@delicious-insights.com>
 
 CONFIG_GIST_RAW_URL='https://gist.githubusercontent.com/tdd/470582/raw/6de3d88a3965501a72afa755e417775013cedf00'
 CYAN=36
 GREEN=32
-PROMPT_GIST_RAW_URL='https://gist.githubusercontent.com/tdd/473838/raw/06ceecb51c7e73d4f705319cd0d876e0fe956795'
+PROMPT_GIST_RAW_URL='https://gist.githubusercontent.com/tdd/473838/raw/f202bc3b8f6b8c7c40fe1d720610031fd5514d8e'
 RED=31
 
 if sed -r '' 2> /dev/null <<< ''; then
@@ -32,13 +37,31 @@ function colorize() {
 }
 
 function config() {
-  # ensure_local_config
-  # ensure_prompt
+  ensure_local_config
+  ensure_prompt
   ensure_completion
 }
 
 function ensure_completion() {
-  true # FIXME
+  announce 'Vérification de la complétion'
+
+  if complete -pr git &> /dev/null; then
+    notice 'Une complétion est en place, tout roule.'
+  else
+    local file=$(get_proper_bash_config_file)
+    local paths=$(get_proper_git_ps1_file)
+    if [ -n "$paths" ]; then
+      local earliest_file=$(echo "$paths" | head -n 1)
+      notice "Chargement des définitions de complétion pour Git depuis ${earliest_file}…"
+      echo -e "\n# Git completion definitions" >> "$file"
+      echo "source '$earliest_file'" >> "$file"
+    else
+      ko 'Impossible de trouver une source de complétion Git :-(\n'
+      return
+    fi
+  fi
+
+  ok '\n\\o/ Vérification de la complétion terminée !\n'
 }
 
 function ensure_local_config() {
