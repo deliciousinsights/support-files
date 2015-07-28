@@ -12,6 +12,7 @@ CYAN=36
 GREEN=32
 PROMPT_GIST_RAW_URL='https://gist.githubusercontent.com/tdd/594d37179ee9b36e1ba3/raw/4bec440234260f1f1e9e098b2731e0321435a6d9'
 RED=31
+[ 'MINGW32' = "$MSYSTEM" ] && ISWINDOWS=true || ISWINDOWS=false
 
 if sed -r '' &> /dev/null <<< ''; then
   sed_extended='-r'
@@ -51,7 +52,7 @@ function ensure_completion()
 {
   announce 'Completion verification'
 
-  if complete -pr git &> /dev/null; then
+  if $ISWINDOWS || complete -pr git &> /dev/null; then
     notice 'A completion is defined, leaving well enough alone.'
   else
     local file=$(get_proper_bash_config_file)
@@ -123,7 +124,7 @@ function ensure_prompt()
 
   source "$file"
 
-  if [ 'function' = "$(type -t __git_ps1)" ]; then
+  if $ISWINDOWS || [ "function" = "$(type -t __git_ps1)" ]; then
     notice 'A Git prompt definition (__git_ps1) is already present: leaving it untouched.'
   else
     local paths=$(get_proper_git_ps1_file)
