@@ -31,7 +31,7 @@ function colorize()
 {
   local color="$1"
   shift
-  if tty -s <&1; then
+  if test -t 0; then
     echo -e "\033[1;${color}m""$@""\033[0m"
   else
     echo "$@"
