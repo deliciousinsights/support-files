@@ -11,7 +11,7 @@ GREEN=32
 PROMPT_GIST_RAW_URL='https://gist.githubusercontent.com/tdd/594d37179ee9b36e1ba3/raw/4bec440234260f1f1e9e098b2731e0321435a6d9'
 RED=31
 
-if sed -r '' 2> /dev/null <<< ''; then
+if sed -r '' &> /dev/null <<< ''; then
   sed_extended='-r'
   sed_inplace="-i'' "
 else
@@ -19,14 +19,16 @@ else
   sed_inplace="-i ''"
 fi
 
-function announce() {
+function announce()
+{
   echo ''
   colorize $CYAN "$@"
   colorize $CYAN $(echo "$@" | sed 's/./=/g')
   echo ''
 }
 
-function colorize() {
+function colorize()
+{
   local color="$1"
   shift
   if tty -s <&1; then
@@ -36,13 +38,15 @@ function colorize() {
   fi
 }
 
-function config() {
+function config()
+{
   ensure_local_config
   ensure_prompt
   ensure_completion
 }
 
-function ensure_completion() {
+function ensure_completion()
+{
   announce 'Vérification de la complétion'
 
   if complete -pr git &> /dev/null; then
@@ -64,7 +68,8 @@ function ensure_completion() {
   ok '\n\\o/ Vérification de la complétion terminée !\n'
 }
 
-function ensure_local_config() {
+function ensure_local_config()
+{
   announce 'Configuration globale'
 
   local path=$(get_local_config_path)
@@ -98,7 +103,8 @@ function ensure_local_config() {
   ok '\n\\o/ Configuration globale terminée !\n'
 }
 
-function ensure_prompt() {
+function ensure_prompt()
+{
   announce "Personnalisation du prompt (Bash uniquement)"
 
   local file=$(get_proper_bash_config_file)
@@ -133,7 +139,8 @@ function ensure_prompt() {
   ok '\n\\o/ Configuration du prompt terminée !\n'
 }
 
-function ensure_value() {
+function ensure_value()
+{
   local value="$2"
   while [ -z "$value" ]; do
     echo -n "$3 doit être renseigné : " >&2
@@ -142,11 +149,13 @@ function ensure_value() {
   git config --global "$1" "$value"
 }
 
-function get_config_entry() {
+function get_config_entry()
+{
   git config --global --get "$1" 2> /dev/null
 }
 
-function get_local_config_path() {
+function get_local_config_path()
+{
   local default="$HOME/.gitconfig"
   [ -f "$default" ] && echo "$default" && return
 
@@ -154,7 +163,8 @@ function get_local_config_path() {
   [ -f "$xdg" ] && echo "$xdg" || echo "$default"
 }
 
-function get_proper_bash_config_file() {
+function get_proper_bash_config_file()
+{
   for option in .bashrc .bash_profile .profile; do
     [ -f "$HOME/$option" ] && echo "$HOME/$option" && return
   done
@@ -165,7 +175,8 @@ function get_proper_bash_config_file() {
   fi
 }
 
-function get_proper_git_ps1_file() {
+function get_proper_git_ps1_file()
+{
   local paths
 
   # Homebrew (OSX)
@@ -189,19 +200,23 @@ function get_proper_git_ps1_file() {
   [ -f "$path" ] && echo "$path"
 }
 
-function ko() {
+function ko()
+{
   colorize $RED "$@"
 }
 
-function notice() {
+function notice()
+{
   echo '  - '"$@"
 }
 
-function ok() {
+function ok()
+{
   colorize $GREEN "$@"
 }
 
-function merge_value() {
+function merge_value()
+{
   local existing_value=$(git config --global --get "$1" 2> /dev/null)
   [ -n "$existing_value" ] && return
   echo -n '  ' && notice "$1 = $2"
