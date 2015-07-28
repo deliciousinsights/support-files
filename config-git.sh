@@ -80,7 +80,7 @@ function ensure_global_config()
     if [ -f "$path.bak" ]; then
       notice "A $path.bak file already existed: leaving it untouched."
     else
-      mv -n "$path" "$path.bak" && notice "Your $path was backed up as $path.bak"
+      mv "$path" "$path.bak" && notice "Your $path was backed up as $path.bak"
     fi
   fi
   notice "Resetting $path to our recommended settings…"
