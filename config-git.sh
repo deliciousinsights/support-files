@@ -40,7 +40,7 @@ function colorize()
 
 function config()
 {
-  ensure_local_config
+  ensure_global_config
   ensure_prompt
   ensure_completion
 }
@@ -68,11 +68,11 @@ function ensure_completion()
   ok '\n\\o/ Completion verification complete!\n'
 }
 
-function ensure_local_config()
+function ensure_global_config()
 {
   announce 'Global configuration'
 
-  local path=$(get_local_config_path)
+  local path=$(get_global_config_path)
   local contents=$(curl -s "$CONFIG_GIST_RAW_URL")
   local username=$(get_config_entry user.name) email=$(get_config_entry user.email)
 
@@ -154,7 +154,7 @@ function get_config_entry()
   git config --global --get "$1" 2> /dev/null
 }
 
-function get_local_config_path()
+function get_global_config_path()
 {
   local default="$HOME/.gitconfig"
   [ -f "$default" ] && echo "$default" && return
