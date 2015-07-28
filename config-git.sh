@@ -47,30 +47,30 @@ function config()
 
 function ensure_completion()
 {
-  announce 'Vérification de la complétion'
+  announce 'Completion verification'
 
   if complete -pr git &> /dev/null; then
-    notice 'Une complétion est en place, tout roule.'
+    notice 'A completion is defined, leaving well enough alone.'
   else
     local file=$(get_proper_bash_config_file)
     local paths=$(get_proper_git_ps1_file)
     if [ -n "$paths" ]; then
       local earliest_file=$(echo "$paths" | head -n 1)
-      notice "Chargement des définitions de complétion pour Git depuis ${earliest_file}…"
+      notice "Loading Git completion definitions from ${earliest_file}…"
       echo -e "\n# Git completion definitions" >> "$file"
       echo "source '$earliest_file'" >> "$file"
     else
-      ko 'Impossible de trouver une source de complétion Git :-(\n'
+      ko 'Unable to find a Git completion source :-(\n'
       return
     fi
   fi
 
-  ok '\n\\o/ Vérification de la complétion terminée !\n'
+  ok '\n\\o/ Completion verification complete!\n'
 }
 
 function ensure_local_config()
 {
-  announce 'Configuration globale'
+  announce 'Global configuration'
 
   local path=$(get_local_config_path)
   local contents=$(curl -s "$CONFIG_GIST_RAW_URL")
@@ -78,20 +78,20 @@ function ensure_local_config()
 
   if [ -f "$path" ]; then
     if [ -f "$path.bak" ]; then
-      notice "Un fichier $path.bak existait déjà : je n’y touche pas."
+      notice "A $path.bak file already existed: leaving it untouched."
     else
-      mv -n "$path" "$path.bak" && notice "Votre $path a été sauvegardé dans $path.bak"
+      mv -n "$path" "$path.bak" && notice "Your $path was backed up as $path.bak"
     fi
   fi
-  notice "Recalage de $path sur notre configuration conseillée…"
+  notice "Resetting $path to our recommended settings…"
   echo "$contents" > "$path"
 
-  notice "Restauration / définition de votre identité…"
-  ensure_value user.name "$username" "Votre nom complet"
-  ensure_value user.email "$email" "Votre e-mail"
+  notice "Restoring / setting your identity…"
+  ensure_value user.name "$username" "Your full name"
+  ensure_value user.email "$email" "Your e-mail address"
 
   if [ -f "$path.bak" ]; then
-    notice "Fusion de vos réglages existants que nous n’aurions pas (re)défini…"
+    notice "Merging your existing settings that we didn’t (re)define…"
     git config -f "$path.bak" --list | {
       IFS==
       while read name value; do
@@ -100,50 +100,50 @@ function ensure_local_config()
     }
   fi
 
-  ok '\n\\o/ Configuration globale terminée !\n'
+  ok '\n\\o/ Global configuration complete!\n'
 }
 
 function ensure_prompt()
 {
-  announce "Personnalisation du prompt (Bash uniquement)"
+  announce "Bash prompt customization"
 
   local file=$(get_proper_bash_config_file)
   local contents=$(curl -s "$PROMPT_GIST_RAW_URL" | grep -v '^#\|^$')
 
-  notice 'Mise en commentaire des anciennes variables d’environnement Git et PS1…'
+  notice 'Commenting out former Git/PS1 environment variables…'
   sed $sed_inplace $sed_extended 's/^export (GIT_|PS1)/\n### Commented by Git Attitude Config Script\n# export \1/g' "$file"
 
-  notice 'Ajout des nouvelles définitions…'
+  notice 'Adding new definitions…'
   echo '' >> "$file"
   echo "$contents" >> "$file"
 
   source "$file"
 
   if [ 'function' = "$(type -t __git_ps1)" ]; then
-    notice 'Une définition de prompt pour Git (__git_ps1) est déjà présente : je n’y touche pas.'
+    notice 'A Git prompt definition (__git_ps1) is already present: leaving it untouched.'
   else
     local paths=$(get_proper_git_ps1_file)
     if [ -n "$paths" ]; then
       local latest_file=$(echo "$paths" | tail -n 1)
-      notice "Chargement des définitions de prompt pour Git depuis ${latest_file}…"
+      notice "Loading Git prompt definitions from ${latest_file}…"
       echo -e "\n# Git completion and prompt definitions" >> "$file"
       echo "$paths" | while read -r path; do
         echo "source '$path'" >> "$file"
       done
     else
-      ko 'Impossible de trouver une source de prompt/complétion Git :-(\n'
+      ko 'Unable to find a Git prompt/completion source :-(\n'
       return
     fi
   fi
 
-  ok '\n\\o/ Configuration du prompt terminée !\n'
+  ok '\n\\o/ Prompt configuration complete!\n'
 }
 
 function ensure_value()
 {
   local value="$2"
   while [ -z "$value" ]; do
-    echo -n "$3 doit être renseigné : " >&2
+    echo -n "$3 must be defined: " >&2
     read -r value >&2
   done
   git config --global "$1" "$value"
