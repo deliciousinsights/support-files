@@ -5,7 +5,7 @@
 #
 # (c) 2015 Christophe Porteneuve <christophe@delicious-insights.com>
 
-CONFIG_GIST_RAW_URL='https://gist.githubusercontent.com/tdd/473838/raw/c4647fc5b2f35e9b54ccbc02b6b401dd8a2eae1d'
+CONFIG_GIST_RAW_URL='https://gist.githubusercontent.com/tdd/470582/raw/de6537e2e1bc9fb731ea282e7463c74c1212b776'
 CYAN=36
 GREEN=32
 PROMPT_GIST_RAW_URL='https://gist.githubusercontent.com/tdd/594d37179ee9b36e1ba3/raw/4bec440234260f1f1e9e098b2731e0321435a6d9'
