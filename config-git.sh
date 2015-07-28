@@ -145,7 +145,7 @@ function ensure_value()
 {
   local value="$2"
   while [ -z "$value" ]; do
-    echo -n "$3 must be defined: " >&2
+    echo -n "    -> $3 must be defined: " >&2
     read -r value >&2
   done
   git config --global "$1" "$value"
