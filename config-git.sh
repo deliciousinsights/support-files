@@ -5,6 +5,8 @@
 #
 # (c) 2015 Christophe Porteneuve <christophe@delicious-insights.com>
 
+[ -z "$DEBUG" ] || set -x
+
 CONFIG_GIST_RAW_URL='https://gist.githubusercontent.com/tdd/470582/raw/de6537e2e1bc9fb731ea282e7463c74c1212b776'
 CYAN=36
 GREEN=32
