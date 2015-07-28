@@ -111,7 +111,9 @@ function ensure_prompt()
   local contents=$(curl -s "$PROMPT_GIST_RAW_URL" | grep -v '^#\|^$')
 
   notice 'Commenting out former Git/PS1 environment variables…'
-  sed $sed_inplace $sed_extended 's/^export (GIT_|PS1)/\n### Commented by Git Attitude Config Script\n# export \1/g' "$file"
+  if [ -f "$file" ]; then
+    sed $sed_inplace $sed_extended 's/^export (GIT_|PS1)/\n### Commented by Git Attitude Config Script\n# export \1/g' "$file"
+  fi
 
   notice 'Adding new definitions…'
   echo '' >> "$file"
