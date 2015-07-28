@@ -5,10 +5,10 @@
 #
 # (c) 2015 Christophe Porteneuve <christophe@delicious-insights.com>
 
-CONFIG_GIST_RAW_URL='https://gist.githubusercontent.com/tdd/470582/raw/6de3d88a3965501a72afa755e417775013cedf00'
+CONFIG_GIST_RAW_URL='https://gist.githubusercontent.com/tdd/473838/raw/c4647fc5b2f35e9b54ccbc02b6b401dd8a2eae1d'
 CYAN=36
 GREEN=32
-PROMPT_GIST_RAW_URL='https://gist.githubusercontent.com/tdd/473838/raw/f202bc3b8f6b8c7c40fe1d720610031fd5514d8e'
+PROMPT_GIST_RAW_URL='https://gist.githubusercontent.com/tdd/594d37179ee9b36e1ba3/raw/4bec440234260f1f1e9e098b2731e0321435a6d9'
 RED=31
 
 if sed -r '' 2> /dev/null <<< ''; then
