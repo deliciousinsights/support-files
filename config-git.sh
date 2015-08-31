@@ -46,9 +46,14 @@ function config()
   ensure_global_config
   ensure_prompt
   ensure_completion
-  echo -e "\n\nDONE!  Run this if you want these settings immediately available:\n"
-  echo "  source $(get_proper_bash_config_file)"
-  echo -e "\nOtherwise, just restart a fresh terminal to have them auto-loaded.\n"
+  echo ''
+  reverse 76 ''
+  reverse 76 'DONE!  Run this if you want these settings immediately available:'
+  reverse 76 ''
+  reverse 76 "source $(get_proper_bash_config_file)"
+  reverse 76 ''
+  reverse 76 'Otherwise, just restart a fresh terminal to have them auto-loaded.'
+  reverse 76 ''
 }
 
 function ensure_completion()
@@ -229,6 +234,17 @@ function merge_value()
   [ -n "$existing_value" ] && return
   echo -n '  ' && notice "$1 = $2"
   git config --global "$1" "$2"
+}
+
+function reverse() {
+  local width=$1 msg=" $2 " stayLeft=$3
+  if [ -z "$stayLeft" ]; then
+    local padding=$(((${width} - ${#msg}) / 2))
+    msg=$(printf '%*s%s' $padding ' ' "$msg")
+  fi
+  local rightPadding=$((${width} - ${#msg}))
+  msg=$(printf '%s%*s' "$msg" $rightPadding ' ')
+  echo -e "  \033[47;30m${msg}\033[0m"
 }
 
 config
