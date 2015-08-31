@@ -46,6 +46,9 @@ function config()
   ensure_global_config
   ensure_prompt
   ensure_completion
+  echo -e "\n\nDONE!  Run this if you want these settings immediately available:\n"
+  echo "  source $(get_proper_bash_config_file)"
+  echo -e "\nOtherwise, just restart a fresh terminal to have them auto-loaded.\n"
 }
 
 function ensure_completion()
