@@ -178,13 +178,13 @@ function get_global_config_path()
 
 function get_proper_bash_config_file()
 {
-  for option in .bashrc .bash_profile .profile; do
+  for option in .bash_profile .bashrc .profile; do
     [ -f "$HOME/$option" ] && echo "$HOME/$option" && return
   done
   if uname -s | grep -q Darwin; then
     echo "$HOME/.profile"
   else
-    echo "$HOME/.bashrc"
+    echo "$HOME/.bash_profile"
   fi
 }
 
