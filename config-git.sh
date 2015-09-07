@@ -149,7 +149,7 @@ function ensure_prompt()
     fi
   fi
 
-  echo "\n\n# So people can use 'l' as well\nfunction l() { ls -lA \"$@\"; }" >> "$file"
+  echo -e "\n\n# So people can use 'l' as well\nfunction l() { ls -lA \"$@\"; }" >> "$file"
 
   ok '\n\\o/ Prompt configuration complete!\n'
 }
