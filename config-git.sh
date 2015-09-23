@@ -17,6 +17,7 @@ RED=31
 if sed -r '' &> /dev/null <<< ''; then
   sed_extended='-r'
   sed_inplace="-i'' "
+  $ISWINDOWS && sed_inplace='-i'
 else
   sed_extended='-E'
   sed_inplace="-i ''"
