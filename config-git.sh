@@ -210,19 +210,26 @@ function get_proper_git_ps1_file()
   if which brew &> /dev/null; then
     path=$(brew --prefix)/etc/bash_completion.d
     if [ -f "$path/git-prompt.sh" ]; then
-      echo "$path/git-completion.bash"$'\n'"$path/git-prompt.sh"
+      echo -e "$path/git-completion.bash\n$path/git-prompt.sh"
       return
     fi
   fi
 
-  # Local Git contribs
-  path=/usr/local/git/contrib/completion
-  if [ -f "$path/git-prompt.sh" ]; then
-    echo "$path/git-completion.bash"$'\n'"$path/git-prompt.sh"
-    return
-  fi
+  # Local Git contribs (various Linux / Unix distros)
+  for path in /usr/local/git/contrib/completion /usr/share/git/completion; do
+    local result=""
+    [ -f "$path/git-completion.bash" ] && result="$path/git-completion.bash"
+    if [ -f "$path/git-prompt.sh" ]; then
+      [ "$result" ] && result="$result"$'\n'
+      result="$result$path/git-prompt.sh"
+    fi
+    if [ "$result" ]; then
+      echo $result
+      return
+    fi
+  done
 
-  # Bash defaults
+  # Bash defaults (e.g. Ubuntu PPA, Fedora / RHEL…)
   path=/etc/bash_completion.d/git
   [ -f "$path" ] && echo "$path"
 }
