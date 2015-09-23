@@ -43,6 +43,7 @@ function colorize()
 
 function config()
 {
+  display_detected_os
   ensure_global_config
   ensure_prompt
   ensure_completion
@@ -55,6 +56,20 @@ function config()
   reverse 76 'Otherwise, just restart a fresh terminal to have them auto-loaded.'
   reverse 76 ''
   echo ''
+}
+
+function display_detected_os()
+{
+  local os linux_type
+  case $(uname -s) in
+    *Darwin*)         os='OSX';;
+    *MINGW*|*CYGWIN*) os='Windows (Cygwin)';;
+    *)
+      [ -f "/etc/issue" ] && linux_type=" ($(cat /etc/issue | sed 's/ *\\\\.*$//'))"
+      os="Linux${linux_type}"
+      ;;
+  esac
+  announce "Detected OS: $os"
 }
 
 function ensure_completion()
