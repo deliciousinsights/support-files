@@ -87,13 +87,7 @@ function ensure_global_config()
   local contents=$(curl -s "$CONFIG_GIST_RAW_URL")
   local username=$(get_config_entry user.name) email=$(get_config_entry user.email)
 
-  if [ -f "$path" ]; then
-    if [ -f "$path.bak" ]; then
-      notice "A $path.bak file already existed: leaving it untouched."
-    else
-      mv "$path" "$path.bak" && notice "Your $path was backed up as $path.bak"
-    fi
-  fi
+  try_backing_up "$path"
   notice "Resetting $path to our recommended settings…"
   echo "$contents" > "$path"
 
@@ -123,6 +117,7 @@ function ensure_prompt()
 
   notice 'Commenting out former Git/PS1 environment variables…'
   if [ -f "$file" ]; then
+    try_backing_up "$file" copy
     sed $sed_inplace $sed_extended 's/^export (GIT_|PS1)/\n### Commented by Git Attitude Config Script\n# export \1/g' "$file"
   fi
 
@@ -238,7 +233,8 @@ function merge_value()
   git config --global "$1" "$2"
 }
 
-function reverse() {
+function reverse()
+{
   local width=$1 msg=" $2 " stayLeft=$3
   if [ -z "$stayLeft" ]; then
     local padding=$(((${width} - ${#msg}) / 2))
@@ -247,6 +243,19 @@ function reverse() {
   local rightPadding=$((${width} - ${#msg}))
   msg=$(printf '%s%*s' "$msg" $rightPadding ' ')
   echo -e "  \033[47;30m${msg}\033[0m"
+}
+
+function try_backing_up()
+{
+  local path="$1" copy="$2" cmd=mv
+  [ "$copy" ] && cmd=cp
+  [ -f "$path" ] || return
+
+  if [ -f "$path.bak" ]; then
+    notice "A $path.bak file already existed: leaving it untouched."
+  else
+    $cmd "$path" "$path.bak" && notice "Your $path was backed up as $path.bak"
+  fi
 }
 
 config
