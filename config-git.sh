@@ -54,6 +54,7 @@ function config()
   reverse 76 ''
   reverse 76 'Otherwise, just restart a fresh terminal to have them auto-loaded.'
   reverse 76 ''
+  echo ''
 }
 
 function ensure_completion()
