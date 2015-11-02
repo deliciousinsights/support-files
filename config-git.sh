@@ -86,7 +86,9 @@ function ensure_completion()
       local earliest_file=$(echo "$paths" | head -n 1)
       notice "Loading Git completion definitions from ${earliest_file}…"
       echo -e "\n# Git completion definitions" >> "$file"
-      echo "source '$earliest_file'" >> "$file"
+      for path in $paths; do
+        echo "source '$earliest_file'" >> "$file"
+      done
     else
       ko 'Unable to find a Git completion source :-(\n'
       return
