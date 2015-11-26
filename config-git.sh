@@ -7,7 +7,7 @@
 
 [ -z "$DEBUG" ] || set -x
 
-CONFIG_GIST_RAW_URL='https://gist.githubusercontent.com/tdd/470582/raw/a98d5c2fc98c3293f6cf89b17e7963c6c8358b82'
+CONFIG_GIST_RAW_URL='https://gist.githubusercontent.com/tdd/470582/raw/bf6d78454682c4799a94b0946ef5d0b0b6aa0cd2'
 CYAN=36
 GREEN=32
 PROMPT_GIST_RAW_URL='https://gist.githubusercontent.com/tdd/594d37179ee9b36e1ba3/raw/4bec440234260f1f1e9e098b2731e0321435a6d9'
