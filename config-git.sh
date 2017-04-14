@@ -218,7 +218,7 @@ function get_proper_git_ps1_file()
   fi
 
   # Local Git contribs (various Linux / Unix distros)
-  for path in /usr/local/git/contrib/completion /usr/share/git/completion; do
+  for path in /usr/local/git/contrib/completion /usr/share/git/completion /usr/share/git-core/contrib/completion/; do
     local result=""
     [ -f "$path/git-completion.bash" ] && result="$path/git-completion.bash"
     if [ -f "$path/git-prompt.sh" ]; then
